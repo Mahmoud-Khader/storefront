@@ -5,7 +5,7 @@ const ActiveCategory= props => {
 
   return (
       <>
-      {props.activeCategory &&
+      {props.ActiveCategory &&
     <Typography variant="h4" > Active Category: {props.activeCategory}</Typography>
       }
       </>
@@ -13,7 +13,7 @@ const ActiveCategory= props => {
 }
 
 const mapStateToProps = state => ({
-    activeCategory:  state.store.activeCategory
+    ActiveCategory:  state.categoryReducer.activeCategory
 });
 
 export default connect(mapStateToProps)(ActiveCategory);

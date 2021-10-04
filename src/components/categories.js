@@ -1,4 +1,4 @@
-import { selectCategory } from '../store/product';
+import { selectCategory } from '../store/categories';
 import { connect } from "react-redux";
 import { Button } from '@material-ui/core';
 import { Breadcrumbs, Typography } from '@material-ui/core';
@@ -11,7 +11,7 @@ const Categories= props => {
       {props.categories.map((category,idx) => {
         return (
           <Button key={idx} variant="contained" color="primary"  onClick={() => props.selectCategory(category.normalizedName)}>
-            <Typography component="h2"> {category.displayName} </Typography>
+            <Typography component="h2"> {category.normalizedName} </Typography>
           </Button>
         )
       })}
@@ -20,7 +20,7 @@ const Categories= props => {
 }
 
 const mapStateToProps = state => ({
-    categories: state.store.categories
+    categories: state.categoryReducer.categories
 });
 
 const mapDispatchToProps = {selectCategory};
