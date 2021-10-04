@@ -1,7 +1,8 @@
+/* eslint-disable array-callback-return */
 import { connect } from "react-redux";
-
+import { Button } from '@material-ui/core';
 import { Grid, Card, CardMedia, CardContent, Typography } from '@material-ui/core';
-
+import { addProduct, productInventory } from "../store/actions";
 
 const Product = props => {
     return (
@@ -12,7 +13,6 @@ const Product = props => {
             alignItems="center"
         >
             {props.products.map((items, idx) => {
-                if (props.activeCategory === items.name)
                     return (
                         <Card key={idx} elevation={3}>
                             <CardMedia image={items.image}
@@ -24,6 +24,16 @@ const Product = props => {
                                 <Typography component="h2"> Description: {items.description} </Typography>
                                 <Typography component="h2"> Price: {items.price} </Typography>
                                 <Typography component="h2"> In Stock: {items.inventoryCount} </Typography>
+                                <Button variant="contained" color="secondery" 
+                                onClick={(inventory) => {
+                      if (items.inventoryCount) {
+                        props.addProduct(items);
+                        props.productInventory(items);
+                      } else {
+                        alert("empty item");
+                      }
+                    }}
+                    >Add To Cart </Button>
                             </CardContent>
                         </Card>
                     )
@@ -34,9 +44,10 @@ const Product = props => {
 }
 
 const mapStateToProps = state => ({
-    products: state.store.product,
-    activeCategory: state.store.activeCategory
+    products: state.productsReducer.activeProduct,
+    activeCategory: state.categoryReducer.activeCategory
 });
+const mapDispatchToProps = { addProduct, productInventory };
 
 
-export default connect(mapStateToProps)(Product);
+export default connect(mapStateToProps, mapDispatchToProps)(Product);
