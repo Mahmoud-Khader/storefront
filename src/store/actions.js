@@ -1,6 +1,22 @@
+import axios from "axios";
+
+const api='https://storefront0.herokuapp.com/product'
+export const getData=()=>async (dispatch,state)=>{
+
+let res =await axios.get(api)
+dispatch(getProduct(res.data))
+}
+
+
 export const addProduct = (product) => {
     return {
       type: "ADD",
+      payload: product,
+    };
+  };
+  export const getProduct = (product) => {
+    return {
+      type: "GET",
       payload: product,
     };
   };

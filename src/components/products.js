@@ -1,10 +1,24 @@
 /* eslint-disable array-callback-return */
-import { connect } from "react-redux";
+import { connect,useSelector,useDispatch } from "react-redux";
 import { Button } from '@material-ui/core';
 import { Grid, Card, CardMedia, CardContent, Typography } from '@material-ui/core';
-import { addProduct, productInventory } from "../store/actions";
+import { addProduct,getProduct ,getData, productInventory } from "../store/actions";
+import { useEffect } from "react";
+
 
 const Product = props => {
+    const dispatch=useDispatch()
+    useEffect(() => {
+      props.getProduct(dispatch(getData()))
+    }, [dispatch, props, props.products])
+    // const dispatch = useDispatch();
+
+    // const products = useSelector(state => state.productsReducer);
+
+    // useEffect(() => {
+    //     dispatch(getData());
+    // }, [dispatch]);
+    console.log(props.activeCategory);
     return (
         <Grid
             container
@@ -13,6 +27,7 @@ const Product = props => {
             alignItems="center"
         >
             {props.products.map((items, idx) => {
+                if (props.activeCategory.displayName === items.category)
                     return (
                         <Card key={idx} elevation={3}>
                             <CardMedia image={items.image}
@@ -39,15 +54,16 @@ const Product = props => {
                     )
             })}
         </Grid>
+
     )
 
 }
 
 const mapStateToProps = state => ({
-    products: state.productsReducer.activeProduct,
+    products: state.productsReducer.product,
     activeCategory: state.categoryReducer.activeCategory
 });
-const mapDispatchToProps = { addProduct, productInventory };
+const mapDispatchToProps = { addProduct,getProduct, productInventory };
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(Product);
