@@ -2,22 +2,26 @@
 import { connect,useSelector,useDispatch } from "react-redux";
 import { Button } from '@material-ui/core';
 import { Grid, Card, CardMedia, CardContent, Typography } from '@material-ui/core';
-import { addProduct,getProduct ,getData, productInventory } from "../store/actions";
+// import { addProduct,getProduct ,getData, productInventory } from "../store/actions";
 import { useEffect } from "react";
+import {get,add,remove,invetory} from "../store/product"
 
 
 const Product = props => {
     const dispatch=useDispatch()
+    // useEffect(() => {
+    //   props.add(dispatch(get()))
+    // }, [dispatch, props, props.products])
     useEffect(() => {
-      props.getProduct(dispatch(getData()))
-    }, [dispatch, props, props.products])
+        props.get();
+    }, []);
     // const dispatch = useDispatch();
 
-    // const products = useSelector(state => state.productsReducer);
+    const products = useSelector(state => state.productSlice);
 
-    // useEffect(() => {
-    //     dispatch(getData());
-    // }, [dispatch]);
+    useEffect(() => {
+        dispatch(get());
+    }, [dispatch]);
     console.log(props.activeCategory);
     return (
         <Grid
@@ -26,7 +30,7 @@ const Product = props => {
             justifyContent="space-evenly"
             alignItems="center"
         >
-            {props.products.map((items, idx) => {
+            {products.map((items, idx) => {
                 if (props.activeCategory.displayName === items.category)
                     return (
                         <Card key={idx} elevation={3}>
@@ -42,8 +46,8 @@ const Product = props => {
                                 <Button variant="contained" color="secondery" 
                                 onClick={(inventory) => {
                       if (items.inventoryCount) {
-                        props.addProduct(items);
-                        props.productInventory(items);
+                        props.get(items);
+                        // props.invetory(items);
                       } else {
                         alert("empty item");
                       }
@@ -54,16 +58,20 @@ const Product = props => {
                     )
             })}
         </Grid>
+        // <>
+        // {console.log(props.get())}
+        // {console.log(props.activeCategory)}
+        // </>
 
     )
 
 }
 
 const mapStateToProps = state => ({
-    products: state.productsReducer.product,
-    activeCategory: state.categoryReducer.activeCategory
+    products: state.productSlice.product,
+    activeCategory: state.categorySlice.activeCategory
 });
-const mapDispatchToProps = { addProduct,getProduct, productInventory };
+const mapDispatchToProps = { get,remove,add,invetory };
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(Product);

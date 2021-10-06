@@ -1,7 +1,7 @@
-const initialState = 
-// []
-{
-    product:[
+// const initialState = 
+// // []
+// {
+//     product:[
       // {
       //   category:'FOOD',
       //   name:'Mansaf',
@@ -75,60 +75,110 @@ const initialState =
       //   image:'https://i.ytimg.com/vi/F63h3v9QV7w/maxresdefault.jpg'
       // }
       
-    ],
-    activeProduct: [],
-  }
+  //   ],
+  //   activeProduct: [],
+  // }
+
+    // const productsReducer = (state = initialState, action) => {
+  //   const { type, payload } = action;
   
-  
-  const productsReducer = (state = initialState, action) => {
-    const { type, payload } = action;
-  
-    switch (type) {
-      case "ACTIVE":
-       state.product.filter(item=>{
-         return (payload===item.category ? item.category:null)
-       })
-       console.log(state.product);
-        return state;
+  //   switch (type) {
+  //     case "ACTIVE":
+  //      state.product.filter(item=>{
+  //        return (payload===item.category ? item.category:null)
+  //      })
+  //      console.log(state.product);
+  //       return state;
       // case 'ACTIVE':
       //   return { ...state, activeCategory: payload }
      
 
-        case "GET": 
-         state.product=payload
-         return state
+  //       case "GET": 
+  //        state.product=payload
+  //        return state
       
   
   
-      case "ADDPRODUCT":
-        state.product = state.product.map((item) => {
-          if (item.name === payload.name) {
-            if (item.inventoryCount > 0) {
-              item.inventoryCount = item.inventoryCount - 1;
-            }
-            return item;
-          }
-          return item;
-        });
-        return {...state};
+  //     case "ADDPRODUCT":
+  //       state.product = state.product.map((item) => {
+  //         if (item.name === payload.name) {
+  //           if (item.inventoryCount > 0) {
+  //             item.inventoryCount = item.inventoryCount - 1;
+  //           }
+  //           return item;
+  //         }
+  //         return item;
+  //       });
+  //       return {...state};
   
-      case "DELETE":
-        state.product = state.product.map((item) => {
-          if (item.name === payload.product.name) {
-            item.inventoryCount = item.inventoryCount + 1;
+  //     case "DELETE":
+  //       state.product = state.product.map((item) => {
+  //         if (item.name === payload.product.name) {
+  //           item.inventoryCount = item.inventoryCount + 1;
   
-            return item;
-          }
-          return item;
-        });
-        return {...state};
+  //           return item;
+  //         }
+  //         return item;
+  //       });
+  //       return {...state};
   
-      default:
-        return state;
+  //     default:
+  //       return state;
+  //   }
+  // };
+
+  import { createSlice } from "@reduxjs/toolkit";
+  import axios from "axios";
+
+const productSlice = createSlice({
+    name: "product",
+    initialState: [],
+    reducers: {
+        add(state, action) {
+          
+          // state.push({ name: action.payload });
+          console.log(action.payload );
+          return action.payload
+        },
+        remove(state, action) {
+            return state.filter(product => product.name !== action.payload);
+        },
+        invetory(state, action) {
+          let array = action.payload;
+          array.map((item) => {
+                    if (item.name === action.payload.name) {
+                      if (item.inventoryCount > 0) {
+                        item.inventoryCount = item.inventoryCount - 1;
+                      }
+                      return item;
+                    }
+                    return item;
+                  });
+                  return {...state};
+        }
     }
-  };
+});
+
+
+
+// export const get = () => async dispatch => {
+//     const response = await fetch('https://storefront0.herokuapp.com/product');
+//     const products = await response.json();
+//     products.forEach(product => dispatch(add(product)));
+// }
+
+
+
+const api='https://storefront0.herokuapp.com/product'
+export const get=()=>async (dispatch,state)=>{
+
+let res =await axios.get(api)
+dispatch(add(res.data))
+}
+  
+
   
   
+  export const { add, remove,invetory } = productSlice.actions;
   
-  
-  export default productsReducer;
+  export default productSlice.reducer;

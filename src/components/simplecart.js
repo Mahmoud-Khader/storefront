@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { deleteProduct } from "../store/actions";
+import { remove } from "../store/actions";
 import { Button } from "@material-ui/core";
 
 const SimpleCart = (props) => {
@@ -20,7 +20,7 @@ const SimpleCart = (props) => {
                   <Button
                     color="secondary"
                     onClick={() => {
-                      props.deleteProduct(item,idx);
+                      props.remove(item,idx);
                     }}
                   >
                    
@@ -38,8 +38,8 @@ const SimpleCart = (props) => {
 };
 
 const mapStateToprops = (state) => {
-  return { cart: state.cartReducer };
+  return { cart: state.cartSlice };
 };
-const mapDispatchToProps = { deleteProduct };
+const mapDispatchToProps = { remove };
 
 export default connect(mapStateToprops, mapDispatchToProps)(SimpleCart);

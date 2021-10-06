@@ -13,7 +13,7 @@ const ActiveCategory= props => {
 }
 
 const mapStateToProps = state => ({
-    ActiveCategory:  state.categoryReducer.activeCategory
+    ActiveCategory:  state.categorySlice.activeCategory
 });
 
 export default connect(mapStateToProps)(ActiveCategory);

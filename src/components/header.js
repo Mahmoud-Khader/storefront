@@ -9,7 +9,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import Badge from '@material-ui/core/Badge';
 import { makeStyles } from '@material-ui/core/styles';
-import { showCart } from "../store/actions";
+import { show } from "../store/cart";
 import { connect } from "react-redux";
 
  function Header() {
@@ -51,7 +51,7 @@ import { connect } from "react-redux";
           </Typography>
           <MenuItem>
         <IconButton aria-label="show 2 new notifications" color="inherit">
-          <Badge onClick={()=>{props.showCart(!props.cart.show)}} badgeContent={props.cart.count}  color="secondary">
+          <Badge onClick={()=>{props.show(!props.cart.show)}} badgeContent={props.cart.count}  color="secondary">
             <ShoppingCartIcon style={{marginRight:'20px'}} />
           </Badge>
         </IconButton>
@@ -64,7 +64,7 @@ import { connect } from "react-redux";
 }
 
 const mapStateToprops = (state) => {
-  return { cart: state.cartReducer };
+  return { cart: state.cartSlice };
 };
-const mapDispatchToProps = { showCart };
+const mapDispatchToProps = { show };
 export default connect(mapStateToprops,mapDispatchToProps)(ButtonAppBar,Header);
